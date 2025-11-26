@@ -1,65 +1,135 @@
-import Image from "next/image";
+import Link from "next/link";
+import {
+  ArrowRight,
+  LineChart,
+  ShieldCheck,
+  Sparkles,
+  TableProperties,
+} from "lucide-react";
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
+
+const featureCards = [
+  {
+    title: "CSV ingestion",
+    description:
+      "The bundled agencies and contacts CSVs are parsed at runtime, so your data is always in sync without ETL work.",
+    icon: TableProperties,
+  },
+  {
+    title: "Quota aware",
+    description:
+      "Every user gets 50 verified contacts per day with upgrade prompts when the ceiling is hit.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Analytical view",
+    description:
+      "Sort and scan agencies with population data, counties, and quick links to official websites.",
+    icon: LineChart,
+  },
+];
+
+const stats = [
+  { label: "Agencies monitored", value: "900+" },
+  { label: "Contacts curated", value: "1,000+" },
+  { label: "Daily outreach limit", value: "50 contacts" },
+];
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="relative flex min-h-screen flex-col gap-16 overflow-hidden bg-linear-to-b from-indigo-50 via-white to-slate-50 px-6 py-16 text-center">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+      >
+        <div className="absolute left-1/2 top-12 h-96 w-96 -translate-x-1/2 rounded-full bg-indigo-200 blur-[140px] opacity-30" />
+      </div>
+
+      <section className="mx-auto flex max-w-4xl flex-col items-center gap-6">
+        <div className="inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-white/70 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-indigo-600 shadow-sm backdrop-blur">
+          <Sparkles className="h-3 w-3" />
+          Agency Intelligence
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <h1 className="text-5xl font-semibold leading-tight text-slate-900 sm:text-6xl">
+          Command center for public-sector outreach
+        </h1>
+        <p className="text-lg text-slate-600 sm:text-xl">
+          Authenticate with Clerk to explore every agency in the dataset,
+          monitor populations, and reach out to 50 curated contacts daily—all
+          from a single dashboard experience.
+        </p>
+      </section>
+
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <SignedOut>
+          <SignInButton mode="modal">
+            <button className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-7 py-3 text-white shadow-xl shadow-slate-400/40 transition hover:-translate-y-0.5 hover:bg-slate-800">
+              Launch dashboard
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </SignInButton>
+          <SignUpButton mode="modal">
+            <button className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-7 py-3 text-slate-700 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-slate-300">
+              Create account
+            </button>
+          </SignUpButton>
+        </SignedOut>
+        <SignedIn>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/agencies"
+              className="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-7 py-3 text-white shadow-xl shadow-indigo-400/40 transition hover:-translate-y-0.5 hover:bg-indigo-500"
+            >
+              Go to dashboard
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <div className="rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-600 shadow-sm backdrop-blur">
+              <UserButton afterSignOutUrl="/" />
+            </div>
+          </div>
+        </SignedIn>
+      </div>
+
+      <section className="mx-auto grid max-w-4xl grid-cols-1 gap-4 text-left sm:grid-cols-3">
+        {stats.map((stat) => (
+          <div
+            key={stat.label}
+            className="rounded-2xl border border-white/60 bg-white/90 px-6 py-5 shadow-lg shadow-slate-200/60 backdrop-blur"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <p className="text-sm uppercase tracking-[0.2em] text-slate-500">
+              {stat.label}
+            </p>
+            <p className="mt-2 text-3xl font-semibold text-slate-900">
+              {stat.value}
+            </p>
+          </div>
+        ))}
+      </section>
+
+      <section className="mx-auto grid max-w-6xl gap-6 text-left lg:grid-cols-3">
+        {featureCards.map((card) => (
+          <article
+            key={card.title}
+            className="flex flex-col gap-4 rounded-3xl border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/60"
           >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900/90 text-white">
+              <card.icon className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-slate-900">
+                {card.title}
+              </h2>
+              <p className="mt-2 text-slate-600">{card.description}</p>
+            </div>
+          </article>
+        ))}
+      </section>
+    </main>
   );
 }
