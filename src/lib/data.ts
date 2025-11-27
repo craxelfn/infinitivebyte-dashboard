@@ -5,8 +5,7 @@ import { parse } from "csv-parse/sync";
 
 import type { Agency, Contact } from "./types";
 
-const dataRoot =
-  process.env.DATA_DIR ?? path.join(process.cwd(), "..");
+const dataRoot = path.join(process.cwd(), "src", "lib");
 
 const AGENCY_CSV = path.join(dataRoot, "agencies_agency_rows.csv");
 const CONTACT_CSV = path.join(dataRoot, "contacts_contact_rows.csv");
@@ -19,6 +18,7 @@ async function readCsvRows<T>(filePath: string) {
     trim: true,
   }) as T[];
 }
+
 
 const parseNumber = (value?: string | number | null) => {
   if (value === undefined || value === null || value === "") {
@@ -90,4 +90,3 @@ export const getContacts = cache(async (): Promise<Contact[]> => {
       ),
     );
 });
-
